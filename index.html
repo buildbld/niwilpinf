@@ -785,7 +785,7 @@ body { font-size: 15px; -webkit-font-smoothing: antialiased; text-rendering: opt
 
 <!-- ═══ APP LOGIC ═══ -->
 <script>
-    var SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwkmwUejRgXJO5AP5wBuxoz90MHGeyEQl3CI_nYEItiM5ZfANEBUIt_lcfWxXW2kZjc/exec';
+    var SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzEuBEGBAcNy_YAbgBW_b8I_M-nL_mfHkKeNkcjq21xWLgzxOYR_FRyeLH5OkG4RgsK/exec';
 
     function goStep(n) {
         [1,2,3].forEach(function(x) {
@@ -886,20 +886,23 @@ body { font-size: 15px; -webkit-font-smoothing: antialiased; text-rendering: opt
     }
 
     function submitLead(token) {
-        var payload = {
-            name:       document.getElementById('f-name').value.trim(),
-            phone:      '+91' + document.getElementById('f-phone').value.trim(),
-            concern:    document.getElementById('f-goal').value,
-            invest:     document.getElementById('f-invest').value,
-            verified:   true,
-            token:      token,
-            timestamp:  new Date().toISOString(),
-            source:     'influencer',
-            influencer: INFLUENCER,       // from URL param
-            discount:   DISCOUNT,         // from URL param
-            code:       CODE,             // from URL param
-            secret:     'NiwiForm2026'
-        };
+var urlParams = new URLSearchParams(window.location.search);
+var payload = {
+    name:       document.getElementById('f-name').value.trim(),
+    phone:      '+91' + document.getElementById('f-phone').value.trim(),
+    concern:    document.getElementById('f-goal').value,
+    invest:     document.getElementById('f-invest').value,
+    verified:   true,
+    token:      token,
+    timestamp:  new Date().toISOString(),
+    source:     'influencer',
+    influencer: INFLUENCER,
+    discount:   DISCOUNT,
+    code:       CODE,
+    medium:     urlParams.get('utm_medium')   || 'N/A',
+    campaign:   urlParams.get('utm_campaign') || 'N/A',
+    secret:     'NiwiForm2026'
+};
         fetch(SHEETS_URL, {
             method:'POST', mode:'no-cors',
             headers:{'Content-Type':'application/json'},
